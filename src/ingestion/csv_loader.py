@@ -1,13 +1,10 @@
+from base import FileParser
 import csv
 import os
 
-path = os.path.expanduser("~/Documents/advance_data_pipeline/data/raw/Orders.csv")
-
-def read_csv(path):
-    with open(path) as csv_file:
-        data = []
-        reader = csv.DictReader(csv_file)
-        for i in reader:
-            data.append(i)
-        return data
-
+class ParseCsv(FileParser):
+    def parse_file(self, path):
+        file_path = os.path.expanduser(path)
+        with open(file_path, mode="r", encoding="utf-8") as csv_file:
+            reader = csv.DictReader(csv_file)
+            return [row for row in reader]

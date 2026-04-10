@@ -1,7 +1,17 @@
+from base import FileParser
 import os
-import xml
+import xml.etree.ElementTree as ET
 
-file_path = os.path.expanduser("~/Documents/advance_data_pipeline/data/raw/Orders.xml")
-with open(file_path, encoding="utf-8") as xml_file:
-    data = xml_file.read()
-    print(data)
+class ParseXml(FileParser):
+    def parse_file(self, path):
+        file_path = os.path.expanduser(path)
+        tree = ET.parse(file_path)
+        root = tree.getroot()
+
+        data = []
+        for record in root:
+            item = {}
+            for field in record:
+                item[field.tag] = field.text
+            data.append(item)
+        return data
